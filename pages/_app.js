@@ -1,23 +1,16 @@
 import React from "react";
-import App, { Container } from "next/app";
 import Head from "next/head";
+import { ApolloProvider } from "@apollo/react-hooks";
+import withData from "../utils/apollo";
+import Nav from "../components/nav";
 
 
-export default class MyApp extends App {
-  static async getInitialProps({ Component, router, ctx }) {
-    let pageProps = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-    return { pageProps };
-  }
-
-  render() {
-    const { Component, pageProps } = this.props;
-    return (
-      <>
+const App = ({ Component, pageProps, apollo }) => {
+  return (
+    <ApolloProvider client={apollo}>
         <Head>
+          <title>Bert Järv</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <link
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -25,11 +18,11 @@ export default class MyApp extends App {
             crossOrigin="anonymous"
           />
         </Head>
+        <Nav />
+        <Component {...pageProps} />
+    </ApolloProvider>
+  );
+};
 
-        <Container>
-          <Component {...pageProps} />
-        </Container>
-      </>
-    );
-  }
-}
+// Wraps all components in the tree with the data provider
+export default withData(App);

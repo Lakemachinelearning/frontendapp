@@ -1,24 +1,22 @@
-import Head from 'next/head'
-import { Button, Alert } from 'reactstrap';
+import React from "react";
+import Articles from "../components/articles";
+import Query from "../components/query";
+import ARTICLES_QUERY from "../apollo/queries/article/articles";
 
-const Home = () => (
-  <div className="container">
+const Home = () => {
+  return(
+    <div className="container">
 
-    <Head>
-      <title>App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+            <h1>Welcome to my world!</h1>
 
-    <main>
-      <div>
-        <div>
-          <Alert color="primary">Hello I am Bootstrap</Alert>
-          <Button color="primary">Hello from nextjs</Button>
-        </div>
-      </div>
-    </main>
+            <Query query={ARTICLES_QUERY}>
+            {({ data: { articles } }) => {
+              return <Articles articles={articles} />;
+            }}
+          </Query>
 
-  </div>
-)
+    </div>
+  );
+};
 
-export default Home
+export default Home;
